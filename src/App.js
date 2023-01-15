@@ -1,5 +1,7 @@
 import { Component } from "react";
 import "./App.css";
+import { AddItem } from "./components/addItem";
+import { List } from "./components/currentList";
 import { Search } from "./components/search";
 
 // every toDoItem looks like {
@@ -8,22 +10,41 @@ import { Search } from "./components/search";
 //     {
 //       content: String,
 //       done: Boolean,
-//        id: Number,
+//        ?id: string
 //     }
 //   ]
 // }
-
+// const firstSection = {
+//   sectionTitle: "asf",
+//   sectionContent: [{ content: "fafsdfsfsafsf", done: false, id: "0" }],
+// };
 class App extends Component {
   constructor(props) {
+    const firstSection = {
+      sectionTitle: "asf",
+      sectionContent: [
+        { content: "fafsdfsfsafsf", done: false },
+        { content: "zxcxzxx", done: true },
+      ],
+    };
+    const secondSection = {
+      sectionTitle: "fdsf",
+      sectionContent: [{ content: "fafsdfsfsafsf", done: false }],
+    };
     super(props);
     this.state = {
       searchRequest: "aaaaaa",
-      sections: [],
-      currentSection: {},
+      sections: [firstSection, secondSection],
+      currentSection: firstSection,
       message: "",
     };
     this.changeSearchRequest = this.changeSearchRequest.bind(this);
     this.lookForSection = this.lookForSection.bind(this);
+    this.closeMessage = this.closeMessage.bind(this);
+    this.addContent = this.addContent.bind(this);
+    this.addSection = this.addSection.bind(this);
+    this.deleteContent = this.deleteContent.bind(this);
+    this.deleteSection = this.deleteSection.bind(this);
   }
 
   lookForSection(usersTitle) {
@@ -67,7 +88,7 @@ class App extends Component {
     });
   }
 
-  addContent(content, id) {
+  addContent(content) {
     this.setState({
       ...this.state,
       currentSection: {
@@ -77,7 +98,6 @@ class App extends Component {
           {
             content,
             done: false,
-            id,
           },
         ],
       },
@@ -85,15 +105,19 @@ class App extends Component {
   }
 
   // delete smth
-
+  // good
   deleteContent(id) {
+    console.log("asddsfdasfds");
     const updatedContents = this.state.currentSection.sectionContent.filter(
-      (contentItem) => contentItem.id !== id
+      (contentItem, index) => index !== +id
     );
+    console.log(updatedContents);
     const updatedSections = this.state.sections.map((section) => {
-      if (section.title === this.currentSection.title) {
+      console.log(section);
+      console.log(this.state.currentSection);
+      if (section.sectionTitle === this.state.currentSection.sectionTitle) {
         return {
-          title: section.title,
+          sectionTitle: section.sectionTitle,
           sectionContent: updatedContents,
         };
       }
@@ -107,12 +131,13 @@ class App extends Component {
       },
       sections: updatedSections,
     });
+    console.log("delete content");
   }
 
   deleteSection() {
     const updatedSections = this.state.sections
       .map((section) => {
-        if (section.title === this.currentSection.title) {
+        if (section.title === this.state.currentSection.sectionTitle) {
           return null;
         }
         return section;
@@ -137,6 +162,15 @@ class App extends Component {
       <div className="app">
         <Search changeSearchRequest={this.changeSearchRequest} />
         {this.state.searchRequest}
+        <AddItem
+          sectionName={this.state.currentSection.sectionTitle}
+          addContent={this.addContent}
+        />
+        <List
+          items={this.state.currentSection.sectionContent}
+          sectionTitle={this.state.currentSection.sectionTitle}
+          delete={this.deleteContent}
+        />
       </div>
     );
   }
