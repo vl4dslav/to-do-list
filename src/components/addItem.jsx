@@ -30,15 +30,15 @@ export class AddItem extends Component {
     return (
       <div className="addItem">
         <div className="d-flex justify-content-between">
-          <div>{this.props.sectionName}</div>
+          <div className="display-5">{this.props.sectionName}</div>
           <button className="btn btn-light" onClick={this.openInput}>
-            +
+            add task
           </button>
         </div>
         {this.state.visible ? (
-          <div class="input-group mb-3">
+          <div className="input-group mb-3">
             <span
-              class="input-group-text"
+              className="input-group-text"
               id="inputGroup-sizing-default"
               onClick={this.addNewContent}
             >
@@ -46,9 +46,10 @@ export class AddItem extends Component {
             </span>
             <input
               type="text"
-              class="form-control"
+              className="form-control"
               aria-label="Sizing example input"
               aria-describedby="inputGroup-sizing-default"
+              maxLength={100}
               value={this.state.content}
               onChange={(e) => {
                 this.setState({

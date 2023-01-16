@@ -20,25 +20,22 @@ export class Search extends Component {
 
   handleSubmit(e) {
     e.preventDefault();
-    console.log("sasf");
     this.props.changeSearchRequest(this.state.searchRequest);
   }
 
   render() {
     return (
       <div className="search">
-        <form onSubmit={this.handleSubmit}>
-          <label htmlFor="search">{/*loop svg img */}</label>
+        <form onSubmit={this.handleSubmit} className="search-form">
           <input
             type="search"
-            id="search"
+            maxLength={50}
             onChange={this.handleChange}
             value={this.searchRequest}
+            className="input-group mb-3"
           />
           <button type="submit">search</button>
         </form>
-
-        {this.state.searchRequest ? <h2>{this.state.searchRequest}</h2> : <></>}
       </div>
     );
   }

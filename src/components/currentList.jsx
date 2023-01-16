@@ -4,11 +4,15 @@ export class List extends Component {
   constructor(props) {
     super(props);
     this.deleteItem = this.deleteItem.bind(this);
+    this.changeDone = this.changeDone.bind(this);
   }
 
   deleteItem(e) {
-    console.log(e.target);
     this.props.delete(e.target.id);
+  }
+
+  changeDone(e) {
+    this.props.toggleDone(e.target.value);
   }
 
   render() {
@@ -23,8 +27,14 @@ export class List extends Component {
                d-flex justify-content-between`}
               key={index}
             >
-              {/* `${this.props.sectionTitle}${index}` */}
-              {item.content}
+              <input
+                className="form-check-input me-1"
+                type="checkbox"
+                value={index}
+                id="firstCheckbox"
+                onClick={this.changeDone}
+              />
+              <div>{item.content}</div>
               <button
                 className="btn btn-outline-danger"
                 id={index}
